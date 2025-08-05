@@ -1,0 +1,9 @@
+/content/drive/MyDrive/traffic2025/cosmos_data/split/cosmos_l20_f2p5/val/cosmos_231212_l20_f2p5_51069057204.npy
+/content/drive/MyDrive/traffic2025/cosmos_data/split/cosmos_l20_f2p5/val/cosmos_231212_l20_f2p5_51069131484.npy
+/content/drive/MyDrive/traffic2025/cosmos_data/split/cosmos_l20_f2p5/val/cosmos_231212_l20_f2p5_51069183900.npy
+/content/drive/MyDrive/traffic2025/cosmos_data/split/cosmos_l20_f2p5/val/cosmos_231212_l20_f2p5_51069327624.npy
+/content/drive/MyDrive/traffic2025/cosmos_data/split/cosmos_l20_f2p5/val/cosmos_231212_l20_f2p5_51069650040.npy
+/content/drive/MyDrive/traffic2025/cosmos_data/split/cosmos_l20_f2p5/val/cosmos_231212_l20_f2p5_51069714852.npy
+/content/drive/MyDrive/traffic2025/cosmos_data/split/cosmos_l20_f2p5/val/cosmos_231212_l20_f2p5_51069942828.npy
+/content/drive/MyDrive/traffic2025/cosmos_data/split/cosmos_l20_f2p5/val/cosmos_231212_l20_f2p5_51070093980.npy
+/content/drive/MyDrive/traffic2025/cosmos_data/split/cosmos_l20_f2p5/val/cosmos_231212_l20_f2p5_51071652576.npy
