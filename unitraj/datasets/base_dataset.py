@@ -243,7 +243,7 @@ class BaseDataset(Dataset):
                     polyline = v['polygon']
                 polyline = interpolate_polyline(polyline)
                 map_infos['road_line'].append(cur_info)
-            elif polyline_type_ in [15, 16]:
+            elif polyline_type_ in [15, 16, 20]:
                 polyline = v['polyline']
                 polyline = interpolate_polyline(polyline)
                 cur_info['type'] = 7
@@ -312,30 +312,30 @@ class BaseDataset(Dataset):
         ret['current_time_index'] = self.config['past_len'] - 1
         ret['sdc_track_index'] = track_infos['object_id'].index(ret['sdc_id'])
 
-        if self.config['only_train_on_ego']:
-            tracks_to_predict = {
-                'track_index': [ret['sdc_track_index']],
-                'difficulty': [0],
-                'object_type': [MetaDriveType.VEHICLE]
-            }
-        elif ret.get('tracks_to_predict', None) is None:
-            filtered_tracks = self.trajectory_filter(ret)
-            sample_list = list(filtered_tracks.keys())
-            tracks_to_predict = {
-                'track_index': [track_infos['object_id'].index(id) for id in sample_list if
-                                id in track_infos['object_id']],
-                'object_type': [track_infos['object_type'][track_infos['object_id'].index(id)] for id in sample_list if
-                                id in track_infos['object_id']],
-            }
-        else:
-            sample_list = list(ret['tracks_to_predict'].keys())  # + ret.get('objects_of_interest', [])
-            sample_list = list(set(sample_list))
-            tracks_to_predict = {
-                'track_index': [track_infos['object_id'].index(id) for id in sample_list if
-                                id in track_infos['object_id']],
-                'object_type': [track_infos['object_type'][track_infos['object_id'].index(id)] for id in sample_list if
-                                id in track_infos['object_id']],
-            }
+        # if self.config['only_train_on_ego']:
+        #     tracks_to_predict = {
+        #         'track_index': [ret['sdc_track_index']],
+        #         'difficulty': [0],
+        #         'object_type': [MetaDriveType.VEHICLE]
+        #     }
+        # elif ret.get('tracks_to_predict', None) is None:
+        #     filtered_tracks = self.trajectory_filter(ret)
+        #     sample_list = list(filtered_tracks.keys())
+        #     tracks_to_predict = {
+        #         'track_index': [track_infos['object_id'].index(id) for id in sample_list if
+        #                         id in track_infos['object_id']],
+        #         'object_type': [track_infos['object_type'][track_infos['object_id'].index(id)] for id in sample_list if
+        #                         id in track_infos['object_id']],
+        #     }
+        # else:
+        sample_list = list(ret['tracks_to_predict'].keys())  # + ret.get('objects_of_interest', [])
+        sample_list = list(set(sample_list))
+        tracks_to_predict = {
+            'track_index': [track_infos['object_id'].index(id) for id in sample_list if
+                            id in track_infos['object_id']],
+            'object_type': [track_infos['object_type'][track_infos['object_id'].index(id)] for id in sample_list if
+                            id in track_infos['object_id']],
+        }
 
         ret['tracks_to_predict'] = tracks_to_predict
 
@@ -554,7 +554,13 @@ class BaseDataset(Dataset):
 
         vel = obj_trajs[:, :, :, 7:9]
         vel_pre = np.roll(vel, shift=1, axis=2)
-        acce = (vel - vel_pre) / 0.1
+
+        if hasattr(self, "timestamps") and len(self.timestamps) >= 2:
+            real_dt = float(self.timestamps[1] - self.timestamps[0])
+            if not (0.35 < real_dt < 0.45):
+                print(f"[WARN] Expected dt≈0.4, but got {real_dt:.3f} — check data fps!")
+
+        acce = (vel - vel_pre) / 0.4
         acce[:, :, 0, :] = acce[:, :, 1, :]
 
         obj_trajs_data = np.concatenate([

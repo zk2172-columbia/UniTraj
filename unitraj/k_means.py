@@ -7,9 +7,10 @@ from omegaconf import OmegaConf
 from sklearn.cluster import KMeans
 from torch.utils.data import DataLoader
 
-from datasets import build_dataset
-from utils.utils import set_seed
-
+# from datasets import build_dataset
+# from utils.utils import set_seed
+from unitraj.datasets import build_dataset
+from unitraj.utils.utils import set_seed
 
 @hydra.main(version_base=None, config_path="configs", config_name="config")
 def cluster(cfg):
@@ -40,7 +41,8 @@ def cluster(cfg):
     pedestrian_last_pos_array = np.concatenate(pedestrian_last_pos_list)
     cyclist_last_pos_array = np.concatenate(cyclist_last_pos_list)
 
-    kmeans = KMeans(n_clusters=64)
+    # kmeans = KMeans(n_clusters=64)
+    kmeans = KMeans(n_clusters=64, n_init='auto', random_state=42)
 
     dict_clusters = {}
     if len(vehicle_last_pos_array) > 0:

@@ -1,0 +1,12 @@
+filename,file_size,file_attributes,region_count,region_id,region_shape_attributes,region_attributes
+cosmos-view.png,1266886,"{}",11,0,"{""name"":""polygon"",""all_points_x"":[108,225,225,108],""all_points_y"":[280,281,597,597]}","{""map_feature"":""CROSSWALK"",""type"":""pedestrian"",""location"":""e""}"
+cosmos-view.png,1266886,"{}",11,1,"{""name"":""polygon"",""all_points_x"":[250,248,317,400,511,588,588],""all_points_y"":[276,188,184,182,183,186,278]}","{""map_feature"":""CROSSWALK"",""type"":""pedestrian"",""location"":""n""}"
+cosmos-view.png,1266886,"{}",11,2,"{""name"":""polygon"",""all_points_x"":[612,730,734,733,617],""all_points_y"":[298,294,461,612,611]}","{""map_feature"":""CROSSWALK"",""type"":""pedestrian"",""location"":""w""}"
+cosmos-view.png,1266886,"{}",11,3,"{""name"":""polygon"",""all_points_x"":[249,437,591,589,250],""all_points_y"":[624,619,623,739,742]}","{""map_feature"":""CROSSWALK"",""type"":""pedestrian"",""location"":""s""}"
+cosmos-view.png,1266886,"{}",11,4,"{""name"":""polygon"",""all_points_x"":[1,108,193,228,237,240,603,600,614,652,728,831,831,676,628,603,606,238,237,212,157,0],""all_points_y"":[270,272,274,247,189,1,0,234,271,293,294,294,622,622,637,675,831,830,651,615,601,602]}","{""map_feature"":""DRIVABLE_AREA"",""type"":""none"",""location"":""none""}"
+cosmos-view.png,1266886,"{}",11,5,"{""name"":""polygon"",""all_points_x"":[2,107,107,1],""all_points_y"":[443,444,556,555]}","{""map_feature"":""LANE_SURFACE_STREET"",""type"":""vehicle"",""location"":""w""}"
+cosmos-view.png,1266886,"{}",11,6,"{""name"":""polygon"",""all_points_x"":[316,441,441,314],""all_points_y"":[183,182,1,1]}","{""map_feature"":""LANE_SURFACE_STREET"",""type"":""vehicle"",""location"":""n""}"
+cosmos-view.png,1266886,"{}",11,7,"{""name"":""polygon"",""all_points_x"":[735,732,831,830],""all_points_y"":[529,377,375,529]}","{""map_feature"":""LANE_SURFACE_STREET"",""type"":""vehicle"",""location"":""e""}"
+cosmos-view.png,1266886,"{}",11,8,"{""name"":""polygon"",""all_points_x"":[390,518,518,391],""all_points_y"":[740,741,829,830]}","{""map_feature"":""LANE_SURFACE_STREET"",""type"":""vehicle"",""location"":""s""}"
+cosmos-view.png,1266886,"{}",11,9,"{""name"":""polygon"",""all_points_x"":[314,318,290,285],""all_points_y"":[0,830,830,0]}","{""map_feature"":""LANE_BIKE_LANE"",""type"":""none"",""location"":""e""}"
+cosmos-view.png,1266886,"{}",11,10,"{""name"":""polygon"",""all_points_x"":[511,508,519,521,547,541],""all_points_y"":[1,607,737,829,829,2]}","{""map_feature"":""LANE_BIKE_LANE"",""type"":""none"",""location"":""w""}"
