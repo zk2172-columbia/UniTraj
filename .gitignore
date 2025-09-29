@@ -27,3 +27,9 @@ unitraj/cache/test/cosmos_l20_f2p5/7.h5
 unitraj/cache/test/cosmos_l20_f2p5/8.h5
 unitraj/cache/test/cosmos_l20_f2p5/9.h5
 unitraj/unitraj_ckpt/mtr_real/epoch=70-val/brier_fde=0.61.ckpt
+
+__pycache__/
+build/
+cache/
+tmp/
+.vscode

@@ -1,4 +1,4 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.4
 Name: UniTraj
 Version: 1.0
 Summary: A Unified Framework for Scalable Vehicle Trajectory Prediction
@@ -6,3 +6,8 @@ Author: Lan Feng
 Author-email: fenglan18@outlook.com
 License: Apache License 2.0
 License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: license
+Dynamic: license-file
+Dynamic: summary

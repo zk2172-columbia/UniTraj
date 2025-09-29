@@ -14,7 +14,7 @@ import numpy as np
 import pickle
 from collections import defaultdict
 import os
-from waymo_open_dataset.protos import sim_agents_submission_pb2
+# from waymo_open_dataset.protos import sim_agents_submission_pb2
 import psutil
 import random
 import wandb
@@ -41,22 +41,22 @@ def cal_polygon_contour(x, y, theta, width, length):
     return polygon_contour
 
 
-def joint_scene_from_states(states, object_ids) -> sim_agents_submission_pb2.JointScene:
-    states = states.numpy()
-    simulated_trajectories = []
-    for i_object in range(len(object_ids)):
-        simulated_trajectories.append(
-            sim_agents_submission_pb2.SimulatedTrajectory(
-                center_x=states[i_object, :, 0],
-                center_y=states[i_object, :, 1],
-                center_z=states[i_object, :, 2],
-                heading=states[i_object, :, 3],
-                object_id=object_ids[i_object].item(),
-            )
-        )
-    return sim_agents_submission_pb2.JointScene(
-        simulated_trajectories=simulated_trajectories
-    )
+# def joint_scene_from_states(states, object_ids) -> sim_agents_submission_pb2.JointScene:
+#     states = states.numpy()
+#     simulated_trajectories = []
+#     for i_object in range(len(object_ids)):
+#         simulated_trajectories.append(
+#             sim_agents_submission_pb2.SimulatedTrajectory(
+#                 center_x=states[i_object, :, 0],
+#                 center_y=states[i_object, :, 1],
+#                 center_z=states[i_object, :, 2],
+#                 heading=states[i_object, :, 3],
+#                 object_id=object_ids[i_object].item(),
+#             )
+#         )
+#     return sim_agents_submission_pb2.JointScene(
+#         simulated_trajectories=simulated_trajectories
+#     )
 
 
 class SMART(pl.LightningModule):
