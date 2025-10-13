@@ -300,6 +300,137 @@ def build_custom_pkl(agents_histories, agents_types, output_path=None, scenario_
 
     return scenario
 
+def build_custom_pkl_all(
+    agents_histories,
+    agents_futures,
+    agents_types,
+    output_path=None,
+    scenario_id=0,
+    fps=2.5,
+    div=20,
+):
+    """
+    Build a pkl file in MetaDrive format (including 8 historical frames + 12 future frames).
+    - agents_histories: dict {agent_id: np.ndarray(8,2)} Historical trajectories (pixels)
+    - agents_futures: dict {agent_id: np.ndarray(12,2)} Future trajectories (pixels)
+    - agents_types: dict {agent_id: "VEHICLE"/"PEDESTRIAN"}
+    """
+
+    obs_len, tgt_len = 8, 12
+    seq_len = obs_len + tgt_len
+
+    # fixed central anchor
+    center = np.array([416, 416, 0], np.float32) / div
+    tracks = {}
+    tracks["center"] = {
+        "type": "ANCHOR",
+        "state": {
+            "position": np.tile(center[None], (seq_len, 1)),
+            "heading": np.zeros(seq_len, np.float32),
+            "length": np.ones(seq_len, np.float32) / 100,
+            "width": np.ones(seq_len, np.float32) / 100,
+            "height": np.ones(seq_len, np.float32) / 100,
+            "velocity": np.zeros((seq_len, 2), np.float32),
+            "valid": np.ones(seq_len, bool),
+        },
+        "metadata": {
+            "type": "ANCHOR",
+            "track_length": seq_len,
+            "object_id": "center",
+        },
+    }
+
+    tracks_to_predict = {}
+    index = 1
+
+    # agents ====
+    for agent_id, hist in agents_histories.items():
+        obj_type = agents_types.get(agent_id)
+        fut = agents_futures.get(agent_id)
+
+        pos = np.zeros((seq_len, 3), np.float32)
+        val = np.ones(seq_len, bool)
+
+        # flip + transfer to meter unit
+        hist = hist.astype(np.float32).copy()
+        hist[:, 1] = 836 - hist[:, 1]
+        hist /= div
+        fut = fut.astype(np.float32).copy()
+        fut[:, 1] = 836 - fut[:, 1]
+        fut /= div
+
+        # Splicing history + future trajectory
+        pos[:obs_len, :2] = hist
+        pos[obs_len:seq_len, :2] = fut
+        val[:] = True
+
+        # computer velocity
+        vel = np.zeros((seq_len, 2), np.float32)
+        dv = pos[1:seq_len, :2] - pos[:seq_len-1, :2]
+        vel[1:seq_len, :] = dv * fps
+        vel[0] = vel[1]
+
+        tracks[agent_id] = {
+            "type": obj_type,
+            "state": {
+                "position": pos,
+                "heading": np.zeros(seq_len, np.float32),
+                "length": np.ones(seq_len, np.float32),
+                "width": np.ones(seq_len, np.float32),
+                "height": np.ones(seq_len, np.float32),
+                "velocity": vel,
+                "valid": val,
+            },
+            "metadata": {
+                "type": obj_type,
+                "track_length": seq_len,
+                "object_id": agent_id,
+            },
+        }
+
+        tracks_to_predict[agent_id] = {
+            "track_index": index,
+            "track_id": agent_id,
+            "difficulty": 0,
+            "object_type": obj_type,
+        }
+        index += 1
+
+    # metadata info
+    map_features = build_map_features()
+    traffic_lights = build_traffic_lights_synth()
+    object_summary = build_object_summary(tracks)
+    number_summary = build_number_summary(
+        object_summary, traffic_lights, map_features, seq_len
+    )
+
+    scenario = {
+        "id": f"Custom_{scenario_id}",
+        "version": "MetaDrive v0.3.0.1",
+        "length": seq_len,
+        "metadata": {
+            "ts": np.arange(seq_len, dtype=np.float32) / fps,
+            "metadrive_processed": False,
+            "coordinate": "metadrive",
+            "source_file": "custom_input",
+            "dataset": "cosmos",
+            "scenario_id": str(scenario_id),
+            "sdc_id": "center",
+            "tracks_to_predict": tracks_to_predict,
+            "object_summary": object_summary,
+            "number_summary": number_summary,
+        },
+        "tracks": tracks,
+        "dynamic_map_states": traffic_lights,
+        "map_features": map_features,
+    }
+
+    if output_path is not None:
+        with open(output_path, "wb") as f:
+            pickle.dump(scenario, f)
+
+    return scenario
+
 if __name__ == "__main__":
     # make two agents' historical trajectories
     def make_straight_line(px0, px1, T):
